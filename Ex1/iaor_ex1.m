@@ -13,6 +13,11 @@ function iaor_ex1
   figure, imhist(imgStretched);
   figure, imshow(imgBin);
   figure, imshow(imgMorph);
+  
+  
+  imgFinal = imgStretched.*imcomplement(imgMorph);
+  #final = imoverlay(imgInput,imgMorph,'white');
+  figure, imshow(imgFinal);
 end
 
 function stretch = stretch(img) 
@@ -23,12 +28,12 @@ function stretch = stretch(img)
   maxFinal = max(maxTemp);
 
   middle = maxFinal - minFinal;
-  disp(minFinal)
-  disp(maxFinal)
+  #disp(minFinal)
+  #disp(maxFinal)
 
   for i = 1:size(imgTemp,1)
       for j = 1:size(imgTemp,2)
-       imgTemp(i, j) = (double((imgTemp(i,j) - minFinal))/double(middle))*250;
+       imgTemp(i, j) = (double((imgTemp(i,j) - minFinal))/double(middle))*255;
       endfor
   endfor      
   stretch = imgTemp;
