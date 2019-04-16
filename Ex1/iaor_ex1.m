@@ -1,16 +1,21 @@
 function iaor_ex1
-  J = imread("input_sat_image.jpg");
-  #figure, imshow(J);
-  #figure, imhist(J);
-  #stretched = imadjust(J, stretchlim(J, [0, 1]));
-  #figure, imshow(stretched);
-  #figure, imhist(stretched);
-  imgStretched = stretched(J);
+  imgInput = imcomplement(imread("input_sat_image.jpg"));
+  imgStretched = stretch(imgInput);
+  imgBin = binary(imgStretched);
+  imgMorph = morph(imgBin);
+  #figure, imshowpair(imgInput, imhist(imgInput), 'montage')
+  #figure, imshowpair(imgStretched, imhist(imgStretched), 'montage')
+  #figure, imshowpair(imgBin, imgMorph, 'montage')
+  
+  figure, imshow(imgInput);
+  figure, imhist(imgInput);
   figure, imshow(imgStretched);
-  figure, imhist(imgStretched); 
+  figure, imhist(imgStretched);
+  figure, imshow(imgBin);
+  figure, imshow(imgMorph);
 end
 
-function stretched = stretched(img) 
+function stretch = stretch(img) 
   imgTemp = img(:,:,1);
   minTemp = min(imgTemp);         
   minFinal = min(minTemp);
@@ -26,5 +31,17 @@ function stretched = stretched(img)
        imgTemp(i, j) = (double((imgTemp(i,j) - minFinal))/double(middle))*250;
       endfor
   endfor      
-  stretched = imgTemp;
+  stretch = imgTemp;
 end
+
+function binary = binary(img)
+  thresh = 0.675#graythresh(img);
+  binary = im2bw(img, thresh);
+endfunction
+
+function morph = morph(img)
+  se = strel('disk',4, 0);
+  imgTemp = imopen(img, se);
+  #figure, imshow(imgTemp)
+  morph = imclose(imgTemp, se);
+endfunction
