@@ -1,4 +1,7 @@
-% Exercise A,b and d
+% Group R
+% Pia Fichtl (114545), Hans Lienhop (114926), Fulya Tasliarmut (111448)
+% ===============================
+% Exercise A, b and d
 % The histogramm of the original image shows us
 % that the grey values are in a small range, which 
 % means there is little contrast in the image. 
