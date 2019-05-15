@@ -17,7 +17,7 @@ function [w, q] = foerstner(I, I_x, I_y)
       trace_M = trace(M);
       det_M = det(M);     
       tw = trace_M / 2 - sqrt((trace_M / 2)^2 - det_M);
-      if tw > 0.0004 % apply given threshold
+      if tw > 0.001 % apply given threshold
         w(x, y) = tw;
       end
       tq = 4 * det_M / (trace_M^2 + eps);
