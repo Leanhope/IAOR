@@ -1,5 +1,5 @@
 function [Gx,Gy] = gaussgradient(img, sigma)
-    radius = 2;
+    radius = 3 * sigma; % filter kernel radius
     size = 5;
     Gx = zeros(5,5);
 
