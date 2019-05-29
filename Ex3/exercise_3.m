@@ -5,19 +5,20 @@
 function exercise_3
     % Task a
     im = im2double(rgb2gray(imread('input_ex3.jpg')));
-    %figure(1);
-    
+
     % Task b
     imStretch = imadjust(im, stretchlim(im),[]);
     [imx, imy] = gaussgradient(imStretch, 0.5);
-    %[imx, imy] = gaussgradient(im, 0.5);
     magnitude = abs(imx)+abs(imy);
+    
+    % Task c
     features = magnitude > 0.2; % where gradient is over 20 percent
     figure; imshow(features);
+    
+    % Task d
     [H,R,T] = houghvoting(features,imx,imy);
     
-
-    % Task f
+    % Task e and f
     % find local maxima with MATLAB function houghpeaks
     peaks = 20;
     %P = houghpeaks(H, peaks, 'threshold', ceil(0.3 * max(H(:))));
@@ -28,11 +29,13 @@ function exercise_3
     plot(T(P(:,2)),R(P(:,1)),'s','color','red');
     hold off;
     
-    % visualize hough lines
+    % Task h and i
+    % utilize hough lines and visualiz them
     lines = houghlines(features,T,R,P,'FillGap', 5,'MinLength',25);
     figure;
     imshow(im), hold on
     max_len = 0;
+    
     for k = 1:length(lines)
        xy = [lines(k).point1; lines(k).point2];
        plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','blue');
