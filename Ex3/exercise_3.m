@@ -1,36 +1,43 @@
+% Group R
+% Pia Fichtl (114545), Hans Lienhop (114926), Fulya Tasliarmut (111448)
+% ===============================
+
 function exercise_3
-    im = rgb2gray(imread("input_ex3.jpg"));
-    imStretch = imadjust(im,stretchlim(im),[]);
-    [imx, imy] = gaussgradient(imStretch, 0.5);
-    magnitude = abs(imx)+abs(imy);
-    edges = edge(magnitude,'Canny', 0.1);
-    [H,R,T] = houghVoting(edges);
+    % Task a
+    im = im2double(rgb2gray(imread('input_ex3.jpg')));
+    %figure(1);
     
-    peaks = 10;
-    P = houghpeaks(H, peaks);
-    imshow(H,[]);
-    hold on;
-    plot(P(:, 2), P(:, 1),'s','color','red')
+    % Task b
+    imStretch = imadjust(im, stretchlim(im),[]);
+    [imx, imy] = gaussgradient(imStretch, 0.5);
+    %[imx, imy] = gaussgradient(im, 0.5);
+    magnitude = abs(imx)+abs(imy);
+    features = magnitude > 0.2; % where gradient is over 20 percent
+    figure; imshow(features);
+    [H,R,T] = houghvoting(features,imx,imy);
+    
+
+    % Task f
+    % find local maxima with MATLAB function houghpeaks
+    peaks = 20;
+    %P = houghpeaks(H, peaks, 'threshold', ceil(0.3 * max(H(:))));
+    P = houghpeaks(H, peaks, 'threshold', 0.1);
+    imshow(H,[0, 10],'XData',T,'YData',R,'InitialMagnification','fit');
+    xlabel('\theta'), ylabel('\rho');
+    axis on, axis normal, hold on;
+    plot(T(P(:,2)),R(P(:,1)),'s','color','red');
+    hold off;
+    
+    % visualize hough lines
+    lines = houghlines(features,T,R,P,'FillGap', 5,'MinLength',25);
+    figure;
+    imshow(im), hold on
+    max_len = 0;
+    for k = 1:length(lines)
+       xy = [lines(k).point1; lines(k).point2];
+       plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','blue');
+
+    end
+    
 end
 
-function[H, Rho, Theta] = houghVoting(binMask)
-    [n_row, n_col] = size(binMask);
-    rho_max = floor(sqrt(n_row^2+n_col^2));
-    
-    H = (zeros(2*rho_max+1, 180));    
-    Rho = [-rho_max, rho_max -1];
-    Theta = [-90, 89];
-    
-    for row = 1:n_row
-        for col = 1:n_col
-            if binMask(row, col) == 1
-                x = col - 1;
-                y = row - 1;
-                for theta = -90:89
-                    rho = round(x * cosd(theta) + y * sind(theta));
-                    H(rho + rho_max + 1, theta + 91) = H(rho + rho_max + 1, theta + 91) + 1;
-                end
-            end
-        end
-    end
-end
