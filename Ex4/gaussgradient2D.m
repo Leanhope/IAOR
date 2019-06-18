@@ -1,7 +1,7 @@
 function g = gaussgradient2D(sigma)
   size = round(3 * sigma);
   Gx = zeros(size,size);
-  r = (size-1)/2
+  r = (size-1)/2;
   for i = -r:r
       for j = -r:r
           % centering
@@ -9,8 +9,8 @@ function g = gaussgradient2D(sigma)
           row = i+x0;
           col = j+y0;
           Gx(col,row) = exp(-((row-x0)^2+(col-y0)^2)/2/sigma/sigma);
-      endfor
-  endfor
+      end
+  end
   % normalize filter
   g = Gx/sum(sum(Gx));
-endfunction
+end
