@@ -30,6 +30,7 @@ g_pad_fft = fft2(g_pad);
 fil_fft = g_pad_fft .* imn_fft;
 % apply inverse FFT
 fil = ifft2(fil_fft);
+
 figure; 
 subplot(1,3,1), imagesc(log(abs(fftshift(imn_fft)))); title('Logarithmic centered image spectra');
 subplot(1,3,2), imagesc(log(abs(fftshift(g_pad_fft)))); title('Logarithmic circular shifted padded Gaussian filter spectra');
@@ -71,10 +72,10 @@ for k = 1:length(img1descriptors)
         plot(boundary(:,2),  boundary(:,1), 'r', 'LineWidth', 2); 
       end
 end
-
 test2B = mat2gray(mean(imread('test2B.jpg'),3));
 bmtest2B = im2bw(test2B, graythresh(test2B));
 [valuesB2, img2descriptors] = makeFourierDescriptor(bmtest2B);
+
 subplot(1, 3, 2), imshow(test2B); %imshow(bmtest2B);
 hold on
 
@@ -84,6 +85,7 @@ for k = 1:length(img2descriptors)
         plot(boundary(:,2),  boundary(:,1), 'r', 'LineWidth', 2); 
     end
 end
+hold off;
 
 test3B = mat2gray(mean(imread('test3B.jpg'),3));
 bmtest3B = im2bw(test3B, graythresh(test3B));
@@ -96,5 +98,4 @@ for k = 1:length(img3descriptors)
         plot(boundary(:,2),  boundary(:,1), 'r', 'LineWidth', 2); 
     end
 end
-
 hold off
