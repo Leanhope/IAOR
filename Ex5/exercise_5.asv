@@ -2,46 +2,29 @@
 % Pia Fichtl (114545), Hans Lienhop (114926), Fulya Tasliarmut (111448)
 % ===============================
 
-img = imread('inputEx5_1.jpg');
-rgb = reshape(img(:),[],3);
-rgb = [rgb zeros(size(rgb, 1), 1)];
-%scatter3(rgb(:,1), rgb(:,2), rgb(:,3))
-k = 5;
-d = 3;
-n = 5;
+%When using the image coordinates as the 4th and 5th dimension in the
+%k-Means algorithm, more 
 
-centers = zeros(k,d);
+%img = imread('inputEx5_1.jpg');
+img = imread('inputEx5_2.jpg');
 
-for i = drange(1:k)
-    for j = drange(1, d)
-        centers(i, j) =  randi([0 255]);
-    end
-end
+k = 3; %amount of centers
+d = 3; %number of dimensions
+n = 1; %number of iterations, when while takes too long...
 
-%find the closest center
-while groups ~= centers
-    for i = drange(1:size(rgb, 1))
-        min = 1000;
-        mIndex = 1;
-        x = int16([rgb(i, 1), rgb(i, 2), rgb(i, 3)]);
-        for j = drange(1,k)
-            y = int16([centers(j, 1), centers(j, 2), centers(j, 3)]);
-            if min > sqrt(sum((x - y) .^ 2))
-                min = sqrt(sum((x - y) .^ 2));
-                mIndex = j;
-            end
-            if j == k
-                rgb(i, 4) = mIndex;
-                if i > 1
-                    groups(mIndex, 1) = (groups(mIndex, 1) + x(1))/2;
-                    groups(mIndex, 2) = (groups(mIndex, 2) + x(2))/2;
-                    groups(mIndex, 3) = (groups(mIndex, 3) + x(3))/2;
-                end
-            end
-        end
-    end
-    centers = groups;
-    groups = zeros(k,d);
-    groups
-    centers
-end
+rgb = kMeans(img, k, d, n);
+figure;
+scatter3(rgb(:,1), rgb(:,2), rgb(:,3), [], rgb(:,d+1))
+b2img = reshape(rgb(:,d+1), [size(img, 1), size(img, 2)]);
+figure;
+imshow(imadjust(b2img,stretchlim(b2img),[]), 'Colormap',jet(255))
+
+k = 4;
+d = 5; %number of dimensions
+n = 2;
+rgb = kMeans(img, k, d, n);
+figure;
+scatter3(rgb(:,1), rgb(:,2), rgb(:,3), [], rgb(:,d+1))
+b2img = reshape(rgb(:,d+1), [size(img, 1), size(img, 2)]);
+figure;
+imshow(imadjust(b2img,stretchlim(b2img),[]), 'Colormap',jet(255))

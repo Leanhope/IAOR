@@ -6,21 +6,35 @@
 img = imread('inputEx5_1.jpg');
 %img = imread('inputEx5_2.jpg');
 
-k = 5; %amount of centers
-d = 3; %number of dimensions
-n = 5; %number of iterations, when while loop takes too long
+%When using the image coordinates as the 4th and 5th dimension in the
+%k-Means algorithm, more 
 
-%rgb = kMeans(img, k, d, n);
+k = 3; %amount of centers
+d = 3; %number of dimensions
+n = 1; %number of iterations, when while loop takes too long
+
+rgb = kMeans(img, k, d, n);
+figure;
+scatter3(rgb(:,1), rgb(:,2), rgb(:,3), [], rgb(:,d+1))
+b2img = reshape(rgb(:,d+1), [size(img, 1), size(img, 2)]);
+figure;
+imshow(imadjust(b2img,stretchlim(b2img),[]), 'Colormap',jet(255))
+
+k = 4;
+d = 5; %number of dimensions
+n = 2;
+
+rgb = kMeans(img, k, d, n);
+figure;
+scatter3(rgb(:,1), rgb(:,2), rgb(:,3), [], rgb(:,d+1))
+b2img = reshape(rgb(:,d+1), [size(img, 1), size(img, 2)]);
+figure;
+imshow(imadjust(b2img,stretchlim(b2img),[]), 'Colormap',jet(255))
 
 w = 20;
 c = 3;
-[output, pixels1, pixels2] = meanShift(img, w, c);
 
-%figure;
-%scatter3(rgb(:,1), rgb(:,2), rgb(:,3), [], rgb(:,4))
-%b2img = reshape(rgb(:,4), [size(img, 1), size(img, 2)]);
-%figure;
-%imshow(imadjust(b2img,stretchlim(b2img),[]))
+[output, pixels1, pixels2] = meanShift(img, w, c);
 
 figure;
 subplot(1,2,1),imshow(img); title('Original image');
