@@ -11,6 +11,9 @@ function rgb = kMeans(img, k, d, n)
     y_count = 0;
     pixelCounter = 0;
     
+    size(img, 1)
+    size(img, 2)
+    
     if d == 5
         for i = drange(1:size(rgb, 1))
             rgb(i, 4) = x_count;
@@ -23,7 +26,6 @@ function rgb = kMeans(img, k, d, n)
             end
         end
     end
-
     for i = drange(1:k)
         for j = drange(1, d)
             if j < 4
@@ -38,9 +40,8 @@ function rgb = kMeans(img, k, d, n)
     
     go = true;
     %find the closest center
-    %while go
-    for l = drange(1:n)
-        l
+    while go
+    %for l = drange(1:n)
         for i = drange(1:size(rgb, 1))
             min = 1000;
             mIndex = 1;
