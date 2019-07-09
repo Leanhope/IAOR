@@ -40,8 +40,8 @@ function rgb = kMeans(img, k, d, n)
     
     go = true;
     %find the closest center
-    while go
-    %for l = drange(1:n)
+    %while go
+    for l = drange(1:n)
         for i = drange(1:size(rgb, 1))
             min = 1000;
             mIndex = 1;
